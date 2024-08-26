@@ -3,8 +3,7 @@ package com.eleganteeshop.Elegantee.Shop.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,10 +18,16 @@ public class AccountDetails {
     @NotEmpty
     @Size(min = 7, max = 55)
     private String username;
+
+    @NotEmpty
     private String firstName;
+    @NotEmpty
     private String lastName;
+    @Email
     private String emailAddress;
+    @Past
     private LocalDate birthDate;
+    @Null
     private int houseNo;
     private String streetName;
     private String barangay;
@@ -30,6 +35,7 @@ public class AccountDetails {
     private String state;
     private int postalCode;
     private String gender;
+    @Size(min = 5)
     private String contactNo;
 
     @OneToOne
