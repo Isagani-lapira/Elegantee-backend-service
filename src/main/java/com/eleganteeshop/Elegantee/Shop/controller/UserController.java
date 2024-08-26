@@ -1,16 +1,21 @@
 package com.eleganteeshop.Elegantee.Shop.controller;
 
 import com.eleganteeshop.Elegantee.Shop.entities.UserEntity;
+import com.eleganteeshop.Elegantee.Shop.repository.AccountRepository;
 import com.eleganteeshop.Elegantee.Shop.repository.UserRepository;
 import com.eleganteeshop.Elegantee.Shop.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.Collection;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/users")
@@ -28,7 +33,18 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Object> createAccount(@RequestBody UserEntity user){
+    public ResponseEntity<Object> createAccount(@Valid @RequestBody UserEntity user, BindingResult result){
+
+        if(result.hasErrors()){
+            //provide object of validation fields and its message to show the errors
+            Map<String,String> fieldErrors = result.getFieldErrors().stream()
+                    .collect(Collectors.toMap(
+                            FieldError::getField,
+                            FieldError::getDefaultMessage
+                    ));
+
+            return ResponseEntity.badRequest().body(fieldErrors);
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         UserEntity savedUser = userService.createNewUser(user);
 
