@@ -1,15 +1,12 @@
 package com.eleganteeshop.Elegantee.Shop.controller;
 
 import com.eleganteeshop.Elegantee.Shop.entities.UserEntity;
-import com.eleganteeshop.Elegantee.Shop.repository.AccountRepository;
-import com.eleganteeshop.Elegantee.Shop.repository.UserRepository;
 import com.eleganteeshop.Elegantee.Shop.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
