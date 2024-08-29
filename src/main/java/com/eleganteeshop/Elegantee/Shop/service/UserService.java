@@ -1,5 +1,8 @@
 package com.eleganteeshop.Elegantee.Shop.service;
 
+import com.eleganteeshop.Elegantee.Shop.Dto.AccountDetailDTO;
+import com.eleganteeshop.Elegantee.Shop.Dto.RegistrationBaseDTO;
+import com.eleganteeshop.Elegantee.Shop.entities.AccountDetails;
 import com.eleganteeshop.Elegantee.Shop.entities.UserEntity;
 import com.eleganteeshop.Elegantee.Shop.exceptions.UserException.RuntimeError.UserAlreadyExist;
 import com.eleganteeshop.Elegantee.Shop.repository.UserRepository;
@@ -39,11 +42,21 @@ public class UserService implements UserDetailsService {
         return roles.split(",");
     }
 
-    public UserEntity createNewUser(UserEntity user){
-        String username = user.getUsername();
+    public UserEntity createNewUser(RegistrationBaseDTO user){
+        String username = user.getUser().getUsername();
 
         if(userRepository.findByUsername(username).isEmpty()){
-            return userRepository.save(user);
+            String roles = "USERS";
+            AccountDetailDTO accountDetailDTO = user.getAccountDetails();
+            AccountDetails accountDetails = new AccountDetails();
+            accountDetails.setUsername(username);
+            accountDetails.setFirstName(accountDetailDTO.getFirstname());
+            accountDetails.setLastName(accountDetailDTO.getFirstname());
+            accountDetails.setEmailAddress(accountDetailDTO.getEmailAddress());
+            accountDetails.setBirthDate(accountDetailDTO.getBirthDate());
+            UserEntity newUser = new UserEntity(username,user.getUser().getPassword(),roles,accountDetails);
+
+            return userRepository.save(newUser);
         }else
             throw new UserAlreadyExist(username+" Already Exist");
     }

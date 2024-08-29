@@ -1,5 +1,6 @@
 package com.eleganteeshop.Elegantee.Shop.controller;
 
+import com.eleganteeshop.Elegantee.Shop.Dto.RegistrationBaseDTO;
 import com.eleganteeshop.Elegantee.Shop.entities.UserEntity;
 import com.eleganteeshop.Elegantee.Shop.service.UserService;
 import jakarta.validation.Valid;
@@ -30,7 +31,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Object> createAccount(@Valid @RequestBody UserEntity user, BindingResult result){
+    public ResponseEntity<Object> createAccount(@Valid @RequestBody RegistrationBaseDTO newUser, BindingResult result){
 
         if(result.hasErrors()){
             //provide object of validation fields and its message to show the errors
@@ -42,8 +43,12 @@ public class UserController {
 
             return ResponseEntity.badRequest().body(fieldErrors);
         }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        UserEntity savedUser = userService.createNewUser(user);
+
+        //encrypt password
+        String encryptedPassword = passwordEncoder.encode(newUser.getUser().getPassword());
+        newUser.getUser().setPassword(encryptedPassword);
+
+        UserEntity savedUser = userService.createNewUser(newUser);
 
         //provide location of the newly created user
         URI location = ServletUriComponentsBuilder
