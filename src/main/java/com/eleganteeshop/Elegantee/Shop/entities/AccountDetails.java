@@ -15,9 +15,11 @@ import java.time.LocalDate;
 public class AccountDetails {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "account_id")
+    private Long account_id;
     @NotEmpty
-    @Size(min = 7, max = 55)
-    private String username;
+    private String username; // Add this field
 
     @NotEmpty
     private String firstName;
@@ -27,42 +29,27 @@ public class AccountDetails {
     private String emailAddress;
     @Past
     private LocalDate birthDate;
-    @Null
-    private int houseNo;
-    private String streetName;
-    private String barangay;
-    private String city;
-    private String state;
-    private int postalCode;
+
+
     private String gender;
     @Size(min = 5)
     private String contactNo;
 
-    @OneToOne
-    @MapsId
-    @JoinColumn(name="username",referencedColumnName = "username")
-    @JsonIgnore
-    private UserEntity userEntity;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id")
+    private AddressEntity address;
 
     public AccountDetails(){}
-    public AccountDetails(String username, String firstName, String lastName, String emailAddress,
-                          LocalDate birthDate, int houseNo, String streetName, String barangay,
-                          String city, String state, int postalCode, String gender, String contactNo,
-                          UserEntity userEntity) {
-        this.username = username;
+    public AccountDetails(String firstName, String lastName, String emailAddress,
+                          LocalDate birthDate, String gender, String contactNo,
+                          AddressEntity address) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.emailAddress = emailAddress;
         this.birthDate = birthDate;
-        this.houseNo = houseNo;
-        this.streetName = streetName;
-        this.barangay = barangay;
-        this.city = city;
-        this.state = state;
-        this.postalCode = postalCode;
         this.gender = gender;
         this.contactNo = contactNo;
-        this.userEntity = userEntity;
+        this.address = address;
     }
 }
 
