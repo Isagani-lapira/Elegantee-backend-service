@@ -1,7 +1,6 @@
 package com.eleganteeshop.Elegantee.Shop.entities;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Getter;

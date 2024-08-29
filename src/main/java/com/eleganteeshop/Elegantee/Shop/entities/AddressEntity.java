@@ -1,7 +1,6 @@
 package com.eleganteeshop.Elegantee.Shop.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
 import lombok.Data;
 
 
